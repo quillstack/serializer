@@ -1,0 +1,43 @@
+{
+    "name": "quillstack/serializer",
+    "description": "Turns objects into what goes over the wire, saying what may go rather than what may not.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "serializer",
+        "json",
+        "api",
+        "quillstack",
+        "php8"
+    ],
+    "homepage": "https://quillstack.org/serializer",
+    "authors": [
+        {
+            "name": "Radek Ziemniewicz",
+            "email": "radek@quillstack.org"
+        }
+    ],
+    "require": {
+        "php": "^8.1"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^2.0",
+        "quillstack/unit-tests": "^0.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Quillstack\\Serializer\\": "src/",
+            "Quillstack\\Serializer\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "unit-tests",
+        "test:coverage": "phpdbg -qrr ./vendor/bin/unit-tests",
+        "stan": "phpstan analyse"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "0.6.x-dev"
+        }
+    }
+}
