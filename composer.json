@@ -10,7 +10,7 @@
         "quillstack",
         "php8"
     ],
-    "homepage": "https://quillstack.org/serializer",
+    "homepage": "https://quillstack.org/packages/serializer",
     "authors": [
         {
             "name": "Radek Ziemniewicz",
