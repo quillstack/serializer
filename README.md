@@ -1,5 +1,18 @@
 # Quillstack Serializer
 
+[![Tests](https://github.com/quillstack/serializer/actions/workflows/tests.yml/badge.svg)](https://github.com/quillstack/serializer/actions/workflows/tests.yml)
+[![Latest Version](https://img.shields.io/packagist/v/quillstack/serializer.svg)](https://packagist.org/packages/quillstack/serializer)
+[![Downloads](https://img.shields.io/packagist/dt/quillstack/serializer.svg)](https://packagist.org/packages/quillstack/serializer)
+[![PHP Version](https://img.shields.io/packagist/php-v/quillstack/serializer)](https://packagist.org/packages/quillstack/serializer)
+[![StyleCI](https://github.styleci.io/repos/1343714621/shield?branch=main)](https://github.styleci.io/repos/1343714621?branch=main)
+[![CodeFactor](https://www.codefactor.io/repository/github/quillstack/serializer/badge)](https://www.codefactor.io/repository/github/quillstack/serializer)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=quillstack_serializer&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=quillstack_serializer)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=quillstack_serializer&metric=coverage)](https://sonarcloud.io/summary/new_code?id=quillstack_serializer)
+[![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=quillstack_serializer&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=quillstack_serializer)
+[![Reliability](https://sonarcloud.io/api/project_badges/measure?project=quillstack_serializer&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=quillstack_serializer)
+[![Security](https://sonarcloud.io/api/project_badges/measure?project=quillstack_serializer&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=quillstack_serializer)
+[![License](https://img.shields.io/packagist/l/quillstack/serializer)](https://github.com/quillstack/serializer/blob/main/LICENSE)
+
 Turns objects into what goes over the wire, saying what may go rather than what may not. Full
 documentation: https://quillstack.org/serializer
 
