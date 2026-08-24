@@ -20,17 +20,34 @@ Every response written by hand is a place a field can be forgotten, and every re
 by exclusion is a place a field can escape. This is the other way round: a field is on the wire
 because somebody said so, and nothing else ever is.
 
-### Requirements
+## Why this exists
+
+There are two ways to decide what an object shows on the wire, and only one of them is safe.
+
+A serializer that sends everything except a list of exclusions sends every new column on the day
+it is added. Somebody adds `password_reset_token` to a table, the API starts returning it, and
+nothing anywhere says so — not a test, not a type, not a review, because nothing changed in the
+serializer.
+
+This one goes the other way round: **a field is on the wire because somebody wrote `#[Exposed]`
+above it**, and nothing else ever is. Adding a column is not a change to the API. Renaming a
+property is caught by the type system rather than quietly dropping a field.
+
+It does one direction only. There is no deserialization here — no turning JSON back into an
+object — because the shape coming in is a different problem, and one that wants validation
+rather than mapping.
+
+## Requirements
 
 - PHP 8.1 or newer
 
-### Installation
+## Installation
 
 ```shell
 composer require quillstack/serializer
 ```
 
-### Usage
+## Usage
 
 ```php
 use Quillstack\Serializer\Attributes\Exposed;
@@ -128,7 +145,7 @@ final class UserResponse extends Response
 The response says which object answers; the object says which of its fields may be seen.
 Neither has a list of what to leave out.
 
-### Technical documentation
+## Technical documentation
 
 | Class | What it is |
 | --- | --- |
@@ -142,7 +159,39 @@ Neither has a list of what to leave out.
 Reflection is done once per class and remembered, because a list of a thousand rows should not
 read the same class a thousand times.
 
-### Unit tests
+## Benchmark
+
+Measured with [quillstack/benchmark](https://github.com/quillstack/benchmark) on ten thousand
+objects — four exposed fields, one renamed, one never exposed — turned into arrays. All three
+produce exactly the same output, including leaving the password out. Runs are interleaved and
+unconcurrent, each figure is the median of five, and PHP is 8.5.7.
+
+| | Version |
+| --- | --- |
+| quillstack/serializer | v0.6.0 |
+| jms/serializer | 3.32.7 |
+| symfony/serializer | v7.4.17 |
+
+| | Per object | Relative |
+| --- | --- | --- |
+| **quillstack/serializer** | **0.59 µs** | — |
+| jms/serializer | 3.55 µs | 6.0× |
+| symfony/serializer | 8.59 µs | 14.5× |
+
+**Both of the others do a great deal more**, and the list is worth reading before taking the
+first row as a recommendation. They deserialize — JSON back into objects, which this cannot do
+at all. They encode XML, CSV and YAML. They handle circular references, custom normalizers,
+callbacks, maximum depth, and in JMS's case versioning with `@Since` and `@Until`. Fourteen
+times the speed is what you get for a serializer that walks typed properties and reads one
+attribute.
+
+One thing found while setting this up is worth passing on: **JMS exposes every property by
+default**, and the `#[Expose]` attributes do nothing until the class is also marked
+`#[ExclusionPolicy('all')]`. Without that line the benchmark serialized the password. It is
+documented behaviour and the fix is one attribute — but it is the failure mode this package was
+built to remove, met on the first try.
+
+## Tests
 
 ```shell
 composer test
@@ -150,6 +199,15 @@ composer test:coverage
 composer stan
 ```
 
-### License
+## The rest of Quillstack
+
+This is one component of [Quillstack](https://github.com/quillstack), a PHP framework which is
+as simple to use as it is strict about what it does.
+
+- [quillstack/response](https://github.com/quillstack/response) — what carries the result
+- [quillstack/orm](https://github.com/quillstack/orm) — where the entities come from
+- [quillstack/framework](https://github.com/quillstack/framework) — where a response serializes itself
+
+## License
 
 MIT. See [LICENSE](LICENSE).
